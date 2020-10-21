@@ -22,6 +22,9 @@ android {
         }
     }
 
+    aaptOptions {
+        noCompress "tflite"
+    }
 }
 
 dependencies {
@@ -29,6 +32,7 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.mlkit:image-labeling-automl:16.0.0'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
