@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "922991525563",
+    "firebase_url": "https://iot-frige.firebaseio.com",
+    "project_id": "iot-frige",
+    "storage_bucket": "iot-frige.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922991525563:android:96631566ea6c28d43a339e",
+        "android_client_info": {
+          "package_name": "com.studio0610.iotfrige"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922991525563-k0b6tsh055pv737l66n3m9r8enk4nfim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7eK1SVPcSXiiB8rZyr8X_k5qwU-A43fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922991525563-k0b6tsh055pv737l66n3m9r8enk4nfim.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
