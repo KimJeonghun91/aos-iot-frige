@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         mWebView.getSettings().setJavaScriptEnabled(true);//자바스크립트 허용
-        mWebView.loadUrl("https://www.naver.com/");//웹뷰 실행
+        mWebView.loadUrl("http://192.168.0.7/stream");//웹뷰 실행
+//        mWebView.loadUrl("https://www.naver.com/");//웹뷰 실행
         mWebView.setWebChromeClient(new WebChromeClient());//웹뷰에 크롬 사용 허용//이 부분이 없으면 크롬에서 alert가 뜨지 않음
         mWebView.setWebViewClient(new WebViewClientClass());//새창열기 없이 웹뷰 내에서 다시 열기//페이지 이동 원활히 하기위해 사용
 
