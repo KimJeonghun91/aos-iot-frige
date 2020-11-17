@@ -27,6 +27,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="18sp"
         android:id="@+id/text1"
-        android:text="머신러닝 결과" />
+        android:text="냉장고 사진을 찍어주세요!" />
 </LinearLayout>

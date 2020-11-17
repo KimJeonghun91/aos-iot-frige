@@ -122,7 +122,22 @@ public class MainActivity extends AppCompatActivity {
 
                             Log.d("label","라벨 텍스트 : "+text + " / idx : "+idx);
                             if(idx == 0){
-                                text1.setText("ML 결과 : "+text);
+                                if("lv0".equals(text)){
+                                    text1.setText("사과가 싱싱해요!");
+                                }else if("lv1".equals(text)){
+                                    text1.setText("사과가 아직까지 싱싱하네요");
+                                }else if("lv2".equals(text)){
+                                    text1.setText("지금 딱 사과 먹기 좋은 시기입니다 :)");
+                                }else if("lv3".equals(text)){
+                                    text1.setText("지금 사과를 안먹으면 후회할지도 몰라요!");
+                                }else if("lv4".equals(text)){
+                                    text1.setText("사과를 전부 먹지는 못하겠네요, 상한 부분은 잘라내고 드세요");
+                                }else if("lv5".equals(text)){
+                                    text1.setText("사과를 버릴지 말지 결정해야 될거에요 :(");
+                                }else if("lv6".equals(text)){
+                                    text1.setText("냉장고안에 사과를 버려주세요 :(");
+                                }
+
                             }
 
                             idx = idx+1;
