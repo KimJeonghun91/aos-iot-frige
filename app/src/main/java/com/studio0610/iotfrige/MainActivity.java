@@ -2,8 +2,13 @@ package com.studio0610.iotfrige;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -37,12 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private WebView mWebView;
-    private Button btnPicFrige;
+    private Button btnPicFrige,btnRealTime,btnNoti;
     private ImageView imageView01;
     private TextView text1;
     private AutoMLImageLabelerLocalModel localModel;
     private AutoMLImageLabelerOptions autoMLImageLabelerOptions;
     private ImageLabeler labeler;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
         mWebView = (WebView) findViewById(R.id.webview);
         btnPicFrige = findViewById(R.id.btnPicFrige);
+        btnRealTime = findViewById(R.id.btnRealTime);
+        btnNoti = findViewById(R.id.btnNoti);
         imageView01 = findViewById(R.id.imageView01);
         text1 = findViewById(R.id.text1);
+
 
 
         mWebView.getSettings().setJavaScriptEnabled(true);//자바스크립트 허용
@@ -80,6 +89,15 @@ public class MainActivity extends AppCompatActivity {
         mWebView.setWebChromeClient(new WebChromeClient());//웹뷰에 크롬 사용 허용//이 부분이 없으면 크롬에서 alert가 뜨지 않음
         mWebView.setWebViewClient(new WebViewClientClass());//새창열기 없이 웹뷰 내에서 다시 열기//페이지 이동 원활히 하기위해 사용
 
+
+
+        btnRealTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWebView.setVisibility(View.VISIBLE);
+            }
+        });
+
         btnPicFrige.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +105,22 @@ public class MainActivity extends AppCompatActivity {
                mlStart(wvImg);
             }
         });
+
+        btnNoti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                count++;
+                NotificationSomethings();
+            }
+        });
+
+
     }
 
     public static Bitmap screenshot(WebView webView) {
@@ -127,9 +161,9 @@ public class MainActivity extends AppCompatActivity {
                                 }else if("lv1".equals(text)){
                                     text1.setText("사과가 아직까지 싱싱하네요");
                                 }else if("lv2".equals(text)){
-                                    text1.setText("지금 딱 사과 먹기 좋은 시기입니다 :)");
+                                    text1.setText("사과의 유통기한 5일 남았어요 :)");
                                 }else if("lv3".equals(text)){
-                                    text1.setText("지금 사과를 안먹으면 후회할지도 몰라요!");
+                                    text1.setText("사과의 유통기한 2일 남았어요 :)");
                                 }else if("lv4".equals(text)){
                                     text1.setText("사과를 전부 먹지는 못하겠네요, 상한 부분은 잘라내고 드세요");
                                 }else if("lv5".equals(text)){
@@ -169,6 +203,50 @@ public class MainActivity extends AppCompatActivity {
             view.loadUrl(url);
             return true;
         }
+    }
+
+
+
+    public void NotificationSomethings() {
+
+
+        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.putExtra("notificationId", count); //전달할 값
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK) ;
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1000101")
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_foreground)) //BitMap 이미지 요구
+                .setContentTitle("(스마트 신선집사)사과의 상태를 확인해주세요!")
+                .setContentText("사과의 유통기한이 2일 밖에 안남았어요 :(")
+                // 더 많은 내용이라서 일부만 보여줘야 하는 경우 아래 주석을 제거하면 setContentText에 있는 문자열 대신 아래 문자열을 보여줌
+                //.setStyle(new NotificationCompat.BigTextStyle().bigText("더 많은 내용을 보여줘야 하는 경우..."))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent) // 사용자가 노티피케이션을 탭시 ResultActivity로 이동하도록 설정
+                .setAutoCancel(true);
+
+        //OREO API 26 이상에서는 채널 필요
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            builder.setSmallIcon(R.drawable.ic_launcher_foreground); //mipmap 사용시 Oreo 이상에서 시스템 UI 에러남
+            CharSequence channelName  = "노티페케이션 채널";
+            String description = "오레오 이상을 위한 것임";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel("1000101", channelName , importance);
+            channel.setDescription(description);
+
+            // 노티피케이션 채널을 시스템에 등록
+            assert notificationManager != null;
+            notificationManager.createNotificationChannel(channel);
+
+        }else builder.setSmallIcon(R.mipmap.ic_launcher); // Oreo 이하에서 mipmap 사용하지 않으면 Couldn't create icon: StatusBarIcon 에러남
+
+        assert notificationManager != null;
+        notificationManager.notify(1234, builder.build()); // 고유숫자로 노티피케이션 동작시킴
+
     }
 
 }

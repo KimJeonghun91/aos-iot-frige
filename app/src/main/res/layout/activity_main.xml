@@ -9,14 +9,27 @@
 
     <WebView
         android:id="@+id/webview"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="250dp"></WebView>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/btnRealTime"
+        android:text="냉장고 실시간 확인" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/btnPicFrige"
-        android:text="냉장고 사진찍기" />
+        android:text="유통기한 체크" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnNoti"
+        android:text="냉장고 체크" />
 
     <ImageView
         android:id="@+id/imageView01"
